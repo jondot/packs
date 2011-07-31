@@ -1,0 +1,8 @@
+
+packjs  - pack coffeescript
+packcss - pack sass, less
+packimg - resize images
+
+more robust url concat & error handling
+reduce LOC :)
+
