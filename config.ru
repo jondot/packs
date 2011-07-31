@@ -1,6 +1,6 @@
 $: << '.'
-require 'packjs/packjs'
+require 'packcss/packcss'
 
-run PackJS
+run PackCSS
 
 
