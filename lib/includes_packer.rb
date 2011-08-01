@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'digest/md5'
+require 'uri'
 
 module IncludesPacker
 
@@ -13,15 +14,13 @@ module IncludesPacker
 
 	def pack(base_url, scripts)
 	  begin
-	    text = ''; target_url = ''
-	    scripts.each { |s| target_url = base_url + s; text << open(target_url).read; }
-
-	    yield(text)
+	    target_url = ''
+	    scripts.each { |s| target_url = URI.join(base_url, s).to_s; yield(s, open(target_url).read) }
 
 	  rescue OpenURI::HTTPError => ex
-	    return "Error: <#{target_url}> is invalid."
+	    raise "Error: <#{target_url}> is invalid."
 	  rescue Exception => ex
-	    return "Error: make sure host and includes are valid.#{ex}#{ex.inspect}"
+	    raise "Error: make sure host and includes are valid.#{ex}#{ex.inspect}"
 	  end
 	end
 end
