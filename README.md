@@ -13,10 +13,15 @@ or
 
 Update: now deployed at heroku, see examples:
 
-packjs: [http://packjs.heroku.com/?host=http://blog.paracode.com/&include=js/jquery.js,js/jquery.noisy.js](http://packjs.heroku.com/?host=http://blog.paracode.com/&include=js/jquery.js,js/jquery.noisy.js)
+packjs: [http://packjs.heroku.com/?host=http://blog.paracode.com/&include=js/jquery.js,js/jquery.noisy.js](http://packjs.heroku.com/?host=http://blog.paracode.com/&include=js/jquery.js,js/jquery.noisy.js)  
+with CoffeeScript: [http://localhost:9292/?host=http://p.mnmly.com/&include=file-api/src/coffee/script.coffee,js/handlebars-0.9.0.pre.5.js](http://localhost:9292/?host=http://p.mnmly.com/&include=file-api/src/coffee/script.coffee,js/handlebars-0.9.0.pre.5.js)  
+
+
 packcss: [http://packcss.heroku.com/?host=http://blog.paracode.com/&include=css/main.css,css/coderay.css
 ](http://packcss.heroku.com/?host=http://blog.paracode.com/&include=css/main.css,css/coderay.css
-)
+)  
+with sass: [http://localhost:9292/?host=http://technocrat.net&include=/stylesheets/standard1.sass,/stylesheets/kai.css](http://localhost:9292/?host=http://technocrat.net&include=/stylesheets/standard1.sass,/stylesheets/kai.css)  
+
 
 More to come soon.  
 
