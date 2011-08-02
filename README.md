@@ -5,20 +5,20 @@ A open source BoxJS/CSS/Etc clone.
 Usage
 -----
 
-	$ cp config.css.ru config.ru
-  $ rackup
+    $ cp config.css.ru config.ru
+    $ rackup
 
 
 
 or
 
-	$ cp config.js.ru config.ru
-  $ rackup
+    $ cp config.js.ru config.ru
+    $ rackup
 
 or
 
-  $ cp config.img.ru config.ru
-  $ rackup
+    $ cp config.img.ru config.ru
+    $ rackup
 
 
 
