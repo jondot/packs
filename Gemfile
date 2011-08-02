@@ -6,3 +6,5 @@ gem 'therubyracer'
 gem 'rainpress'
 gem 'coffee-script'
 gem 'sass'
+gem 'rmagick'
+

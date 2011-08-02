@@ -5,11 +5,22 @@ A open source BoxJS/CSS/Etc clone.
 Usage
 -----
 
-	$ ruby packjs.rb
+	$ cp config.css.ru config.ru
+  $ rackup
+
+
 
 or
 
-	$ ruby packcss.rb
+	$ cp config.js.ru config.ru
+  $ rackup
+
+or
+
+  $ cp config.img.ru config.ru
+  $ rackup
+
+
 
 Update: now deployed at heroku, see examples:
 
@@ -23,6 +34,8 @@ packcss: [http://packcss.heroku.com/?host=http://blog.paracode.com/&include=css/
 with sass: [http://packcss.heroku.com/?host=http://technocrat.net&include=/stylesheets/standard1.sass,/stylesheets/kai.css](http://localhost:9292/?host=http://technocrat.net&include=/stylesheets/standard1.sass,/stylesheets/kai.css)  
 
 
-More to come soon.  
+packimg: [http://packimg.heroku.com/?source=http://n5.nabble.com/images/avatar100.png&resize=20x20&format=gif&flip=vertical](http://packimg.heroku.com/?source=http://n5.nabble.com/images/avatar100.png&resize=20x20&format=gif&flip=vertical)
+
+More to come soon.
 
 Stay tuned, [@jondot](http://twitter.com/jondot).

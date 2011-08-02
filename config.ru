@@ -1,6 +1,5 @@
 $: << '.'
-require 'packcss/packcss'
+require 'packimg/packimg'
 
-run PackCSS
-
+run PackImg
 
