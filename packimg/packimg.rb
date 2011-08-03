@@ -1,7 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'RMagick'
-
+require 'digest/md5'
 
 
 include Magick
@@ -11,7 +11,8 @@ class PackImg < Sinatra::Base
   get '/' do
     
     return "" unless params[:source]
-   
+  
+    etag Digest::MD5.hexdigest("#{params[:source]}:#{params[:resize]}:#{params[:flip]}:#{params[:rotate]}:#{params[:format]}:#{params[:quality]}:#{params[:version]}")
     img = Image.read(params[:source]).first
     
     ops = []
