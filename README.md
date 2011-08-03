@@ -1,6 +1,7 @@
 packs
 =====
-A open source BoxJS/CSS/Etc clone.
+A open source [BoxJS](http://boxjs.com/)/[CSS](http://boxcss.com/)/[Etc](http://boxresizer.com/) implementation compatible with existing Box* interface. You can mount each of those as rack app inside Rails, or separately as a stand-alone application.  
+It is fully compatible with Heroku.
 
 Usage
 -----
