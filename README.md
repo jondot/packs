@@ -39,7 +39,7 @@ packimg: [http://packimg.heroku.com/?source=http://n5.nabble.com/images/avatar10
 
 More to come soon.
 
-Stay tuned, [@jondot](http://twitter.com/jondot).
+Stay tuned, [@jondot](http://twitter.com/jondot), [+Dotan Nahum](http://gplus.to/dotan).
 
 
 
