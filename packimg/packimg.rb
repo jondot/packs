@@ -10,14 +10,20 @@ class PackImg < Sinatra::Base
 
   get '/' do
     
-    return "" unless params[:source]
+    allowed = %w(source resize perspective)
+    params.keep_if { |k,v| allowed.include? k.to_s }
+
+    return "Invalid parameters. Required: \"source\"; allowed: #{allowed}" unless params[:source]
   
-    etag Digest::MD5.hexdigest("#{params[:source]}:#{params[:resize]}:#{params[:flip]}:#{params[:perspective]}:#{params[:rotate]}:#{params[:format]}:#{params[:quality]}:#{params[:version]}")
+    etag Digest::MD5.hexdigest( params.values.sort.join(',') )
+
     img = Image.read(params[:source]).first
     
     ops = []
     ops << ->(image) { image }
+
     ops << ->(image) { image.resize_to_fit(*params[:resize].split('x'))} if params[:resize]
+
     ops << ->(image) { params[:flip] == 'vertical' ? image.flip : image.flop } if params[:flip]
 
     if params[:perspective]
@@ -31,6 +37,7 @@ class PackImg < Sinatra::Base
     res = ops.inject(img){|o,proc| proc.call(o)}
     
     res.format = params[:format] if params[:format]
+
     res.quality = params[:quality].to_i if params[:quality]
     
     content_type res.mime_type
