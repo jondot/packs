@@ -2,7 +2,7 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'RMagick'
 require 'digest/md5'
-
+require 'open-uri'
 
 include Magick
 
@@ -17,8 +17,16 @@ class PackImg < Sinatra::Base
   
     etag Digest::MD5.hexdigest( params.values.sort.join(',') )
 
-    img = Image.read(params[:source]).first
-    
+
+    begin
+        srcdata = open(params[:source])
+    rescue OpenURI::HTTPError => error
+        status error.io.status[0]
+        return
+    end
+
+    img = Image.from_blob(srcdata.read)[0]
+
     ops = []
     ops << ->(image) { image }
 
