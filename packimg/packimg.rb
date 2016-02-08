@@ -3,8 +3,25 @@ require 'sinatra/reloader' if development?
 require 'RMagick'
 require 'digest/md5'
 
+require 'net/http'
+require 'uri'
 
 include Magick
+
+# HTTP requester with redirection following
+def http_fetch(uri_str, limit = 3)
+  raise ArgumentError, 'HTTP redirect too deep' if limit <= 0
+
+  uri = URI.parse(uri_str)
+  request = Net::HTTP::Get.new(uri.path, {'User-Agent' => 'MetaBroadcast image resizer'})
+  response = Net::HTTP.start(uri.host, uri.port) { |http| http.request(request) }
+
+  case response
+  when Net::HTTPRedirection then http_fetch(response['location'], limit - 1)
+  else
+    response
+  end
+end
 
 class PackImg < Sinatra::Base
 
@@ -17,8 +34,30 @@ class PackImg < Sinatra::Base
   
     etag Digest::MD5.hexdigest( params.values.sort.join(',') )
 
-    img = Image.read(params[:source]).first
-    
+
+    begin
+      response = http_fetch(params[:source])
+
+      # If we got an error from the source, pass on the http error code and body
+      if response.code.to_i >= 300
+        status response.code
+        response.body
+      end
+
+      # Attempt load the body as an image
+      img = Image.from_blob(response.body)[0]
+
+    rescue ArgumentError
+      # redirect limit hit
+      status 500
+      return "Too many redirects fetching source image"
+    rescue Magick::ImageMagickError
+      # image load failed, probably not an image
+      status 500
+      return "No image at source"
+    end
+
+
     ops = []
     ops << ->(image) { image }
 
