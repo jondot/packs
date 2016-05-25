@@ -5,6 +5,7 @@ require 'digest/md5'
 
 require 'net/http'
 require 'uri'
+require 'securerandom'
 
 include Magick
 
@@ -27,7 +28,7 @@ class PackImg < Sinatra::Base
 
   get '/' do
     
-    allowed = %w(source resize perspective)
+    allowed = %w(source resize perspective profile)
     params.keep_if { |k,v| allowed.include? k.to_s }
 
     return "Invalid parameters. Required: \"source\"; allowed: #{allowed}" unless params[:source]
@@ -56,8 +57,7 @@ class PackImg < Sinatra::Base
       status 500
       return "No image at source"
     end
-
-
+    
     ops = []
     ops << ->(image) { image }
 
@@ -70,15 +70,27 @@ class PackImg < Sinatra::Base
       img.virtual_pixel_method = Magick::TransparentVirtualPixelMethod
       ops << ->(image) { image.distort(Magick::PerspectiveDistortion, params[:perspective].split(',').collect{|x| x.to_f}) }
     end
-
+    
+    if params[:profile] == "monocrop"
+      tempName = SecureRandom.hex
+      img.write(tempName)
+      # Not ideal, but RMagick doesn't seem to expose the right API to do all of the below
+      system("convert #{tempName} -density 150 -threshold 60% -trim -resize 1024x576 -monochrome
+          -transparent black -fill \"#EBEBEB\" -enhance -opaque white #{tempName}-monocropped")
+      system("convert #{tempName}-monocropped -trim #{tempName}-monocropped")
+      img = Image.read("#{tempName}-monocropped")[0]
+      FileUtils.rm("#{tempName}-monocropped")
+      FileUtils.rm("#{tempName}")
+    end
+    
     ops << ->(image) { image.rotate(params[:rotate].to_i) } if params[:rotate]
 
-    res = ops.inject(img){|o,proc| proc.call(o)}
+    res = ops.inject(img) {|o,proc| proc.call(o)}
     
     res.format = params[:format] if params[:format]
 
     res.quality = params[:quality].to_i if params[:quality]
-    
+
     content_type res.mime_type
 
     res.to_blob
