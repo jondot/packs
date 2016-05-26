@@ -1,5 +1,5 @@
 $: << '.'
-require 'packimg/packimg'
+require_relative 'packimg/packimg'
 
 run PackImg
 
